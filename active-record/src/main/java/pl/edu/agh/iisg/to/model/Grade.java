@@ -14,7 +14,7 @@ public class Grade {
     }
 
     public static boolean gradeStudent(final Student student, final Course course, final float grade) {
-    	String gradeStudentSql = String.format("");
+    	String gradeStudentSql = String.format("INSERT INTO grade");
     	
     	return true;
     }

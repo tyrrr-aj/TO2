@@ -20,7 +20,7 @@ public class Student {
 
 	private final int indexNumber;
 
-	private Student(final int id, final String firstName, final String lastName, final int indexNumber) {
+	public Student(final int id, final String firstName, final String lastName, final int indexNumber) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -28,17 +28,26 @@ public class Student {
 	}
 
 	public static Optional<Student> create(final String firstName, final String lastName, final int indexNumber) {
-		String insertSql = String.format("INSERT INTO %s (first_name, #TODO) VALUES ('%s', #TODO);", TABLE_NAME, firstName); // TODO implement
-
-		// TODO implement
-
+		String insertSql = String.format("INSERT INTO %s (first_name, last_name, index_number) VALUES ('%s', '%s', %d);", TABLE_NAME, firstName, lastName, indexNumber); // TODO implement
+		try {
+			int id = QueryExecutor.createAndObtainId(insertSql);
+			return findById(id);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return Optional.empty();
 	}
 
 	public static Optional<Student> findByIndexNumber(final int indexNumber) {
-		String findByIndexNumberSql = String.format("");
-
-		// TODO implement
+		String findByIndexNumberSql = String.format("SELECT * FROM student WHERE index_number = %d", indexNumber);
+		try {
+			ResultSet rs = QueryExecutor.read(findByIndexNumberSql);
+			return Optional.of(new Student(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getInt("index_number")));
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return Optional.empty();
 	}
 
